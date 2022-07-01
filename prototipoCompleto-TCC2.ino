@@ -1,7 +1,7 @@
 /*Trabalho de conclusão de curso - Engenharia Química PUC-Rio - Isabela Bittencourt
 
 Titulo do trabalho: Implementacao de monitoramento e controle em unidades experimentais
-por meio da comunicação remota através do Arduino e Node-RED
+por meio da comunicacao remota através do Arduino e Node-RED
 
 Orientadora: Prof Dra Amanda Lemette
 
@@ -39,7 +39,7 @@ Thermistor temp(0);
 //variaveis nivel
 long microsecSup, microsecInf;
 float dist_TSup, dist_TInf;
-int SPauto = 12; //SP para controle automatico
+int SPauto = 10; //SP para controle automatico
 int novoSP = SPauto; //inicializo o controle manual com o SP automatico
 int nivelControleMin = 18; //distancia do sensor para garantir que a bomba nao vai cavitar
 int nivelControleMax = 4; //menor distancia do sensor para nao transbordar os tanques/danificar sensores
@@ -105,7 +105,7 @@ void loop (){
   dist_TInf = ultrasonicInf.convert(microsecInf, Ultrasonic::CM);
 
 //Codigo de controle de tanques escrito considerando o tanque superior como um tanque reservatorio
-  if(dist_TInf > (TQMAX - novoSP) && dist_TSup <= nivelControleMin){ //Tanque inferior abaixo do SP: ligar a bomba superior e abrir a valvula, desliga a inferior
+  if(dist_TInf >= (TQMAX - novoSP - 1) && dist_TSup <= nivelControleMin){ //Tanque inferior abaixo do SP: ligar a bomba superior e abrir a valvula, desliga a inferior. -1 para ter +/- SP
     digitalWrite(rele_valvula,LOW);
     digitalWrite(rele_bombaSup,LOW);
     digitalWrite(rele_bombaInf,HIGH);
@@ -115,7 +115,7 @@ void loop (){
     status_tanque = "Abaixo do SP";
   }
   
-  else if(dist_TInf < (TQMAX - novoSP)){//Tanque inferior acima do SP estabelecido, envio o excesso pro tanque superior
+  else if(dist_TInf <= (TQMAX - novoSP + 1)){//Tanque inferior acima do SP estabelecido, envio o excesso pro tanque superior. -1 para ter +/- SP
     digitalWrite(rele_bombaSup,HIGH);
     digitalWrite(rele_valvula,HIGH); 
     digitalWrite(rele_bombaInf,LOW);
@@ -125,14 +125,14 @@ void loop (){
     status_tanque = "Acima do SP";
   }
 
-  else if(dist_TInf == (TQMAX - novoSP)){//Tanques inferior no target estabelecido
+  else if(dist_TInf > (TQMAX - novoSP + 1) && dist_TInf < (TQMAX - novoSP - 1)){//Tanque inferior no target estabelecido
     digitalWrite(rele_bombaSup,HIGH);
     digitalWrite(rele_valvula,HIGH); 
     digitalWrite(rele_bombaInf,HIGH);
     valvula = false;
     bombaSup = false;
     bombaInf = false;
-    status_tanque = "No target";
+    status_tanque = "SP atingido";
   }
 
   else if(dist_TSup > nivelControleMin || dist_TSup <= nivelControleMax || dist_TInf <= nivelControleMax){//Tanque reservatorio (superior) abaixo do limite minimo OU tanques com risco de transbordar
