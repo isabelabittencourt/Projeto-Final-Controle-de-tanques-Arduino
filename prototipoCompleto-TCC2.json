@@ -1,0 +1,1384 @@
+[
+    {
+        "id": "3a30580a9456328b",
+        "type": "tab",
+        "label": "Teste de Protótipo",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "96c86f8ed1192f71",
+        "type": "serial in",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "serial": "71d0916c3a1e91cb",
+        "x": 70,
+        "y": 140,
+        "wires": [
+            [
+                "428153d18c8b6585",
+                "fa1f7a32dc51d40c"
+            ]
+        ]
+    },
+    {
+        "id": "2bf9ac3505c08a3e",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "Lista de dados",
+        "func": "var d = new Date();\nmsg.payload = {\n    \"data\": d.toLocaleString(),\n    \"temperatura\": Number(msg.payload[0]),\n    \"vazao\": Number(msg.payload[1]),\n    \"valvula\":Number(msg.payload[2]),\n    \"bombaSup\": Number(msg.payload[3]),\n    \"bombaInf\": Number(msg.payload[4]),\n    \"nivelSup\": 20 - Number(msg.payload[5]),\n    \"nivelInf\": 20 - Number(msg.payload[6]),\n    \"InfoTanque\": String(msg.payload[7]),\n    \"InfoModo\": String(msg.payload[8])\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
+        "y": 140,
+        "wires": [
+            [
+                "08c05367c82c8c55",
+                "d8b822fb2ee218eb"
+            ]
+        ]
+    },
+    {
+        "id": "fa1f7a32dc51d40c",
+        "type": "change",
+        "z": "3a30580a9456328b",
+        "name": "retira o I",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "I",
+                "fromt": "str",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 140,
+        "wires": [
+            [
+                "9da997c9a71e4abc",
+                "7b1c035c26a1361d"
+            ]
+        ]
+    },
+    {
+        "id": "9da997c9a71e4abc",
+        "type": "change",
+        "z": "3a30580a9456328b",
+        "name": "retira o F",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "F",
+                "fromt": "str",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 140,
+        "wires": [
+            [
+                "c05e6d49e6361bfb",
+                "d45a6ea70f0385c0"
+            ]
+        ]
+    },
+    {
+        "id": "428153d18c8b6585",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "input bruto",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 270,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "c05e6d49e6361bfb",
+        "type": "split",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "splt": ",",
+        "spltType": "str",
+        "arraySplt": "1",
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 690,
+        "y": 140,
+        "wires": [
+            [
+                "c96fbe5f2fb0a8a6",
+                "6c463837f373e8fa"
+            ]
+        ]
+    },
+    {
+        "id": "6c463837f373e8fa",
+        "type": "join",
+        "z": "3a30580a9456328b",
+        "name": "criando lista de dados",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "9",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 920,
+        "y": 140,
+        "wires": [
+            [
+                "c80d237c471017d3",
+                "2bf9ac3505c08a3e",
+                "305aae855bb1b944",
+                "b324e8d4e38fc278",
+                "a80fcef651c8ac38"
+            ]
+        ]
+    },
+    {
+        "id": "3d57140da5fbb6e6",
+        "type": "file",
+        "z": "3a30580a9456328b",
+        "name": "Salvar .CSV",
+        "filename": "C:\\Users\\isabe\\Desktop\\SalvandoCSV\\TCC-final.csv",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 1570,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "08c05367c82c8c55",
+        "type": "csv",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "sep": ",",
+        "hdrin": true,
+        "hdrout": "once",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "data,temperatura,vazao,valvula,bombaSup,bombaInf,nivelSup,nivelInf,InfoTanque,InfoModo",
+        "skip": "0",
+        "strings": false,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 1370,
+        "y": 140,
+        "wires": [
+            [
+                "ad4436457a4f6a1d",
+                "3d57140da5fbb6e6"
+            ]
+        ]
+    },
+    {
+        "id": "7b1c035c26a1361d",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "input - sem i",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "c96fbe5f2fb0a8a6",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 950,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "d45a6ea70f0385c0",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "input - sem f",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "c80d237c471017d3",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1170,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "d8b822fb2ee218eb",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1390,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "ad4436457a4f6a1d",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1630,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "e7185c374425c952",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Dados brutos",
+        "info": "",
+        "x": 90,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "5658087f3efdd396",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Lista de dados + envio para dashboard",
+        "info": "",
+        "x": 790,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "111e721f66a0ac50",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Dashboard",
+        "info": "",
+        "x": 1500,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "8c8dedae88bf27d4",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Salvando em arquivo",
+        "info": "",
+        "x": 1420,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "eb225bebf325a3d5",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Inclui a data nos dados",
+        "info": "",
+        "x": 1200,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "ee837ce6122f510d",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "Temperatura",
+        "func": "msg.payload = Number(msg.payload[0]);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1510,
+        "y": 320,
+        "wires": [
+            [
+                "d14a187bbf5bd4ba",
+                "8dfbe007b5314bdd"
+            ]
+        ]
+    },
+    {
+        "id": "13951395bcb5f340",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1710,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "915cbc9ff17b1bbc",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1710,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "d14a187bbf5bd4ba",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1710,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "c4e05527e80be522",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "Vazao",
+        "func": "msg.payload = Number(msg.payload[1]);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1490,
+        "y": 420,
+        "wires": [
+            [
+                "915cbc9ff17b1bbc",
+                "f3848b919093af26"
+            ]
+        ]
+    },
+    {
+        "id": "2f44c4ef7ec9526d",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "Bomba Superior",
+        "func": "msg.payload = Number(msg.payload[3]);\nif (msg.payload == 0) {\n    msg.payload = \"Desligada\";\n}\nelse{\n     msg.payload = \"Ligada\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1520,
+        "y": 620,
+        "wires": [
+            [
+                "13951395bcb5f340",
+                "f15232331a1542fe"
+            ]
+        ]
+    },
+    {
+        "id": "533c536b550d31cc",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "Valvula",
+        "func": "msg.payload = Number(msg.payload[2]);\nif (msg.payload == 0) {\n    msg.payload = \"Fechada\";\n}\nelse{\n     msg.payload = \"Aberta\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1500,
+        "y": 520,
+        "wires": [
+            [
+                "f70aeb11b6b7d5c5",
+                "6beb4e13b1367599"
+            ]
+        ]
+    },
+    {
+        "id": "f70aeb11b6b7d5c5",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1710,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "305aae855bb1b944",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "Formatando para número",
+        "func": "for(var i = 0; i<7;i++){//menor que 7 pq i=7 e 8 eh string\n    msg.payload[i] = Number(msg.payload[i]);\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1210,
+        "y": 360,
+        "wires": [
+            [
+                "52c894c98ffeb37f",
+                "ee837ce6122f510d",
+                "c4e05527e80be522",
+                "2f44c4ef7ec9526d",
+                "533c536b550d31cc",
+                "8f6cd4ba9da56bef",
+                "29d91439ee9faea1",
+                "c69e74a8da01058e"
+            ]
+        ]
+    },
+    {
+        "id": "52c894c98ffeb37f",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1430,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "8dfbe007b5314bdd",
+        "type": "ui_chart",
+        "z": "3a30580a9456328b",
+        "name": "Temperatura",
+        "group": "a2ab1cd88fdb7403",
+        "order": 2,
+        "width": "12",
+        "height": "6",
+        "label": "Temperatura (ºC) x Tempo",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "15",
+        "ymax": "45",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1710,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f3848b919093af26",
+        "type": "ui_chart",
+        "z": "3a30580a9456328b",
+        "name": "Vazão",
+        "group": "23e918b822d98291",
+        "order": 2,
+        "width": "12",
+        "height": "6",
+        "label": "Vazão (L/min) x Tempo",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "30",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1690,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f15232331a1542fe",
+        "type": "ui_text",
+        "z": "3a30580a9456328b",
+        "group": "a9d65bf89542a9b3",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "name": "Bomba Superior",
+        "label": "Bomba Superior",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1720,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "6beb4e13b1367599",
+        "type": "ui_text",
+        "z": "3a30580a9456328b",
+        "group": "ba4b9592ff534cae",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "name": "Status da valvula",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 1730,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "6b85127be040bfc4",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Utilizar o switch para uso manual do projeto",
+        "info": "",
+        "x": 1790,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "820d7758ef5d2d80",
+        "type": "ui_gauge",
+        "z": "3a30580a9456328b",
+        "name": "Tanque Superior",
+        "group": "f80ffb64a2b91430",
+        "order": 1,
+        "width": "6",
+        "height": "6",
+        "gtype": "wave",
+        "title": "",
+        "label": " cm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1720,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "8f6cd4ba9da56bef",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "Tanque Superior",
+        "func": "msg.payload = 20 - Number(msg.payload[5]);//pq o sensor mede a distancia ate o topo da agua\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1520,
+        "y": 820,
+        "wires": [
+            [
+                "a00c1fc1670cc716",
+                "820d7758ef5d2d80"
+            ]
+        ]
+    },
+    {
+        "id": "29d91439ee9faea1",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "Tanque Inferior",
+        "func": "msg.payload = 20 - Number(msg.payload[6]);//pq o sensor mede a distancia ate o topo da agua\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1520,
+        "y": 920,
+        "wires": [
+            [
+                "eb3e0a5da8a2a386",
+                "11715409bb1ac7c0"
+            ]
+        ]
+    },
+    {
+        "id": "a00c1fc1670cc716",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1710,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "eb3e0a5da8a2a386",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1710,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "11715409bb1ac7c0",
+        "type": "ui_gauge",
+        "z": "3a30580a9456328b",
+        "name": "Tanque Inferior",
+        "group": "6ff73334b9f524e8",
+        "order": 1,
+        "width": "6",
+        "height": "6",
+        "gtype": "wave",
+        "title": "",
+        "label": " cm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1720,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "f735f1dad0292897",
+        "type": "remote-access",
+        "z": "3a30580a9456328b",
+        "confignode": "7f8c1be91108555f",
+        "name": "",
+        "verbose": 0,
+        "x": 120,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7280dfa9ac34b145",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Conexão via RemoteRED - Celular",
+        "info": "",
+        "x": 180,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "b324e8d4e38fc278",
+        "type": "ui_text",
+        "z": "3a30580a9456328b",
+        "group": "27bda4bbf2da0c47",
+        "order": 8,
+        "width": "6",
+        "height": "1",
+        "name": "Observações Tanque",
+        "label": "Tanque:",
+        "format": "{{msg.payload[7]}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "a80fcef651c8ac38",
+        "type": "ui_text",
+        "z": "3a30580a9456328b",
+        "group": "27bda4bbf2da0c47",
+        "order": 7,
+        "width": "6",
+        "height": "1",
+        "name": "Observações Modo",
+        "label": "Modo:",
+        "format": "{{msg.payload[8]}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1190,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "52d752ad6ed40dcf",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1710,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "c69e74a8da01058e",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "Bomba Inferior",
+        "func": "msg.payload = Number(msg.payload[4]);\nif (msg.payload == 0) {\n    msg.payload = \"Desligada\";\n}\nelse{\n     msg.payload = \"Ligada\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1520,
+        "y": 720,
+        "wires": [
+            [
+                "52d752ad6ed40dcf",
+                "d110f70dfe357474"
+            ]
+        ]
+    },
+    {
+        "id": "d110f70dfe357474",
+        "type": "ui_text",
+        "z": "3a30580a9456328b",
+        "group": "a9d65bf89542a9b3",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "name": "Bomba Inferior",
+        "label": "Bomba Inferior",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1720,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "579315fe07da9422",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Status: Modo e Tanques",
+        "info": "",
+        "x": 1200,
+        "y": 497.1428527832031,
+        "wires": []
+    },
+    {
+        "id": "843254bac52e75b2",
+        "type": "serial out",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "serial": "71d0916c3a1e91cb",
+        "x": 870,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "1c7bb596613d37d8",
+        "type": "ui_switch",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "label": "Alterar modo de controle",
+        "tooltip": "",
+        "group": "86e163c69ac8dd11",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 150,
+        "y": 340,
+        "wires": [
+            [
+                "6e6818b9bd7d6449",
+                "98aca12ff33b9338"
+            ]
+        ]
+    },
+    {
+        "id": "6e6818b9bd7d6449",
+        "type": "switch",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "false"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 350,
+        "y": 300,
+        "wires": [
+            [
+                "212731037990b042"
+            ],
+            [
+                "ecb27758f565b7ea"
+            ]
+        ]
+    },
+    {
+        "id": "79b7d6772676f2a9",
+        "type": "ui_text",
+        "z": "3a30580a9456328b",
+        "group": "86e163c69ac8dd11",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 550,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "98aca12ff33b9338",
+        "type": "change",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "true",
+                "fromt": "bool",
+                "to": "Controle Manual",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "false",
+                "fromt": "bool",
+                "to": "Controle Automático",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 380,
+        "y": 380,
+        "wires": [
+            [
+                "79b7d6772676f2a9"
+            ]
+        ]
+    },
+    {
+        "id": "62a334b67657ee7f",
+        "type": "debug",
+        "z": "3a30580a9456328b",
+        "name": "envio pela serial",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "9a22540589791d1a",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "func": "if(msg.payload >= 18){\n    msg.payload = \"T15*\";\n}\nelse if (msg.payload <= 4){\n    msg.payload = \"T5*\";\n}\nelse{\n    msg.payload = \"T\" + msg.payload + \"*\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 240,
+        "wires": [
+            [
+                "62a334b67657ee7f",
+                "843254bac52e75b2"
+            ]
+        ]
+    },
+    {
+        "id": "d2dc4971632f2acb",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Comunicação Serial",
+        "info": "",
+        "x": 130,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "ecb27758f565b7ea",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "func": "msg.payload = \"F\" + \"*\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 320,
+        "wires": [
+            [
+                "843254bac52e75b2",
+                "62a334b67657ee7f"
+            ]
+        ]
+    },
+    {
+        "id": "89d0a4c82e22e5d6",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "NOTA:pensar se vale colocar uma opção de alterar o SPauto",
+        "info": "",
+        "x": 260,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "841e46e3447d5acf",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Desativada pq RemoteRED estava em período de teste apenas",
+        "info": "",
+        "x": 270,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "78f75a103d838a75",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Tem que remover a primeira variavel i, nao tds da frase",
+        "info": "",
+        "x": 422,
+        "y": 179,
+        "wires": []
+    },
+    {
+        "id": "212731037990b042",
+        "type": "ui_text_input",
+        "z": "3a30580a9456328b",
+        "name": "",
+        "label": "Definir SP Manual",
+        "tooltip": "",
+        "group": "4664dddfe7c916a1",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "number",
+        "delay": "0",
+        "topic": "payload",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 530,
+        "y": 260,
+        "wires": [
+            [
+                "9a22540589791d1a"
+            ]
+        ]
+    },
+    {
+        "id": "7e864dcc6219fb64",
+        "type": "function",
+        "z": "3a30580a9456328b",
+        "d": true,
+        "name": "",
+        "func": "msg.payload = \"T\"+ msg.payload + \"*\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d10b79a92264389a",
+        "type": "ui_numeric",
+        "z": "3a30580a9456328b",
+        "d": true,
+        "name": "",
+        "label": "Definir SP Manual",
+        "tooltip": "",
+        "group": "4664dddfe7c916a1",
+        "order": 2,
+        "width": "6",
+        "height": "1",
+        "wrap": true,
+        "passthru": false,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": "5",
+        "max": "15",
+        "step": 1,
+        "className": "",
+        "x": 130,
+        "y": 700,
+        "wires": [
+            [
+                "7e864dcc6219fb64"
+            ]
+        ]
+    },
+    {
+        "id": "7e956f50ce8eeaf3",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "NODEs fora de uso",
+        "info": "",
+        "x": 130,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "402c6d5c6bcae00a",
+        "type": "comment",
+        "z": "3a30580a9456328b",
+        "name": "Nível = 20 - distância medida pelo sensor",
+        "info": "",
+        "x": 1220,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "71d0916c3a1e91cb",
+        "type": "serial-port",
+        "serialport": "COM4",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "I",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "F",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "a2ab1cd88fdb7403",
+        "type": "ui_group",
+        "name": "Temperatura",
+        "tab": "439f7186161864ea",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "23e918b822d98291",
+        "type": "ui_group",
+        "name": "Vazão",
+        "tab": "439f7186161864ea",
+        "order": 2,
+        "disp": true,
+        "width": "12",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "a9d65bf89542a9b3",
+        "type": "ui_group",
+        "name": "Status das Bombas",
+        "tab": "439f7186161864ea",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "ba4b9592ff534cae",
+        "type": "ui_group",
+        "name": "Status da Válvula",
+        "tab": "439f7186161864ea",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "f80ffb64a2b91430",
+        "type": "ui_group",
+        "name": "Nível Tanque Superior",
+        "tab": "439f7186161864ea",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "6ff73334b9f524e8",
+        "type": "ui_group",
+        "name": "Nível Tanque Inferior",
+        "tab": "439f7186161864ea",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "7f8c1be91108555f",
+        "type": "remote-config",
+        "name": "Node-RED Teste de Protótipo",
+        "host": "localhost",
+        "protocol": "http",
+        "port": "1880",
+        "baseurl": "/ui",
+        "instancehash": "7764uey7ikg8o9eucxdx3xb1dcoujh2218ohg8ihixkfpq5eq3rj8oodivwuddtk",
+        "server": "nodered03.remote-red.com",
+        "region": "us"
+    },
+    {
+        "id": "27bda4bbf2da0c47",
+        "type": "ui_group",
+        "name": "Observações",
+        "tab": "439f7186161864ea",
+        "order": 8,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "86e163c69ac8dd11",
+        "type": "ui_group",
+        "name": "Modo de controle",
+        "tab": "439f7186161864ea",
+        "order": 7,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "4664dddfe7c916a1",
+        "type": "ui_group",
+        "name": "Alterar SP",
+        "tab": "439f7186161864ea",
+        "order": 9,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "439f7186161864ea",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
